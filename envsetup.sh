@@ -653,7 +653,7 @@ function lunch()
     build_build_var_cache
     if [ $? -ne 0 ]
     then
-        # if we can't find a product, try to grab it off the SLIM github
+        # if we can't find a product, try to grab it off the TeamOrion github
         T=$(gettop)
         pushd $T > /dev/null
         build/tools/roomservice.py $product
