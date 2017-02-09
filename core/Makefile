@@ -6,6 +6,7 @@
 # INS: Module "Install:" output color (cyan for ics)
 
 ifneq ($(BUILD_WITH_COLORS),0)
+  CL_ORION="\033[38;5;24m"
   CL_PFX="\033[33m"
   CL_INS="\033[36m"
   CL_RST="\033[0m"
@@ -2048,9 +2049,29 @@ otapackage: $(INTERNAL_OTA_PACKAGE_TARGET)
 orion: otapackage
 	$(hide) ln -f $(INTERNAL_OTA_PACKAGE_TARGET) $(CUSTOM_TARGET_PACKAGE)
 	$(hide) $(MD5SUM) $(CUSTOM_TARGET_PACKAGE) > $(CUSTOM_TARGET_PACKAGE).md5sum
-	@echo -e "Package complete: $(CUSTOM_TARGET_PACKAGE)"
-
-endif    # build_ota_package
+	@echo -e ""
+	@echo -e "${cya}Building ${bldcya}OrionOS Andromeda ${txtrst}";
+	@echo -e ""
+	@echo -e ${CL_ORION}"||********************************************||"
+	@echo -e ${CL_ORION}"||                                            ||"
+	@echo -e ${CL_ORION}"||   ____       _               ____  ______  ||"
+	@echo -e ${CL_ORION}"||  / __ \     (_)             / __ \|  ____| ||"
+	@echo -e ${CL_ORION}"|| | |  | |_ __ _  ___  _ __  | |  | | |____  ||"
+	@echo -e ${CL_ORION}"|| | |  | | '__| |/ _ \| '_ \ | |  | |____  | ||"
+	@echo -e ${CL_ORION}"|| | |__| | |  | | (_) | | | || |__| |____| | ||"
+	@echo -e ${CL_ORION}"||  \____/|_|  |_|\___/|_| |_| \____/|______| ||"
+	@echo -e ${CL_ORION}"||                                            ||"
+	@echo -e ${CL_ORION}"||********************************************||"
+	@echo -e ""
+	@echo -e ${CL_ORION}"zip: "${CL_MAG} $(CUSTOM_TARGET_PACKAGE)${CL_RST}
+	@echo -e ${CL_ORION}"md5: "${CL_MAG}" `cat $(CUSTOM_TARGET_PACKAGE).md5sum | cut -d ' ' -f 1`"${CL_RST}
+	@echo -e ${CL_ORION}"size:"${CL_MAG}" `ls -lah $(CUSTOM_TARGET_PACKAGE) | cut -d ' ' -f 5`"${CL_RST}
+	@echo -e ${CL_ORION}"================================================"${CL_RST}
+	@echo -e ""
+endif    # recovery_fstab is defined
+endif    # TARGET_NO_KERNEL != true
+endif    # TARGET_DEVICE != generic*
+endif    # TARGET_PRODUCT != sdk
 
 # -----------------------------------------------------------------
 # The update package
