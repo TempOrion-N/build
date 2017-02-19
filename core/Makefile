@@ -2042,7 +2042,7 @@ $(INTERNAL_OTA_PACKAGE_TARGET): $(BUILT_TARGET_FILES_PACKAGE)
 	   $(if $(OEM_OTA_CONFIG), -o $(OEM_OTA_CONFIG)) \
 	   $(BUILT_TARGET_FILES_PACKAGE) $@
 
-CUSTOM_TARGET_PACKAGE := $(PRODUCT_OUT)/$(TARGET_PRODUCT).zip
+CUSTOM_TARGET_PACKAGE := $(PRODUCT_OUT)/$(TARGET_PRODUCT)-$(ORION_VERSION).zip
 
 .PHONY: otapackage orion
 otapackage: $(INTERNAL_OTA_PACKAGE_TARGET)
@@ -2052,26 +2052,21 @@ orion: otapackage
 	@echo -e ""
 	@echo -e "${cya}Building ${bldcya}OrionOS Andromeda ${txtrst}";
 	@echo -e ""
-	@echo -e ${CL_ORION}"||********************************************||"
-	@echo -e ${CL_ORION}"||                                            ||"
-	@echo -e ${CL_ORION}"||   ____       _               ____  ______  ||"
-	@echo -e ${CL_ORION}"||  / __ \     (_)             / __ \|  ____| ||"
-	@echo -e ${CL_ORION}"|| | |  | |_ __ _  ___  _ __  | |  | | |____  ||"
-	@echo -e ${CL_ORION}"|| | |  | | '__| |/ _ \| '_ \ | |  | |____  | ||"
-	@echo -e ${CL_ORION}"|| | |__| | |  | | (_) | | | || |__| |____| | ||"
-	@echo -e ${CL_ORION}"||  \____/|_|  |_|\___/|_| |_| \____/|______| ||"
-	@echo -e ${CL_ORION}"||                                            ||"
-	@echo -e ${CL_ORION}"||********************************************||"
+	@echo -e ${CL_ORION}"|A|********************************************|A|"
+	@echo -e ${CL_ORION}"|N|   ____       _               ____  ______  |N|"
+	@echo -e ${CL_ORION}"|D|  / __ \     (_)             / __ \|  ____| |D|"
+	@echo -e ${CL_ORION}"|R| | |  | |_ __ _  ___  _ __  | |  | | |____  |R|"
+	@echo -e ${CL_ORION}"|O| | |  | | '__| |/ _ \| '_ \ | |  | |____  | |O|"
+	@echo -e ${CL_ORION}"|M| | |__| | |  | | (_) | | | || |__| |____| | |M|"
+	@echo -e ${CL_ORION}"|E|  \____/|_|  |_|\___/|_| |_| \____/|______| |E|"
+	@echo -e ${CL_ORION}"|D|                                            |D|"
+	@echo -e ${CL_ORION}"|A|********************************************|A|"
 	@echo -e ""
 	@echo -e ${CL_ORION}"zip: "${CL_MAG} $(CUSTOM_TARGET_PACKAGE)${CL_RST}
 	@echo -e ${CL_ORION}"md5: "${CL_MAG}" `cat $(CUSTOM_TARGET_PACKAGE).md5sum | cut -d ' ' -f 1`"${CL_RST}
 	@echo -e ${CL_ORION}"size:"${CL_MAG}" `ls -lah $(CUSTOM_TARGET_PACKAGE) | cut -d ' ' -f 5`"${CL_RST}
 	@echo -e ${CL_ORION}"================================================"${CL_RST}
 	@echo -e ""
-endif    # recovery_fstab is defined
-endif    # TARGET_NO_KERNEL != true
-endif    # TARGET_DEVICE != generic*
-endif    # TARGET_PRODUCT != sdk
 
 # -----------------------------------------------------------------
 # The update package

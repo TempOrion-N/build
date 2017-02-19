@@ -128,6 +128,14 @@ function check_product()
         echo "Couldn't locate the top of the tree.  Try setting TOP." >&2
         return
     fi
+
+    if (echo -n $1 | grep -q -e "^orion_") ; then
+       ORION_BUILD=$(echo -n $1 | sed -e 's/^orion_//g')
+       export BUILD_NUMBER=$((date +%s%N ; echo $ORION_BUILD; hostname) | openssl sha1 | sed -e 's/.*=//g; s/ //g' | cut -c1-10)
+    else
+       ORION_BUILD=
+    fi
+    export ORION_BUILD
         TARGET_PRODUCT=$1 \
         TARGET_BUILD_VARIANT= \
         TARGET_BUILD_TYPE= \
@@ -528,6 +536,12 @@ function print_lunch_menu()
     echo "You're building on" $uname
     echo
     echo "Lunch menu... pick a combo:"
+    
+    if [ "z${ORION_DEVICES_ONLY}" != "z" ]; then
+         echo "Breakfast menu... pick a combo:"
+    else
+         echo "Lunch menu... pick a combo:"
+    fi
 
     local i=1
     local choice
@@ -539,6 +553,51 @@ function print_lunch_menu()
 
     echo
 }
+
+function brunch()
+{
+    breakfast $*
+    if [ $? -eq 0 ]; then
+       time mka orion
+    else
+        echo "No such item in brunch menu. Try 'breakfast'"
+        return 1
+    fi
+    return $?
+}
+
+function breakfast()
+{
+    target=$1
+    ORION_DEVICES_ONLY="true"
+    unset LUNCH_MENU_CHOICES
+    for f in `/bin/ls vendor/orion/vendorsetup.sh 2> /dev/null`
+        do
+            echo "including $f"
+            . $f
+        done
+    unset f
+
+    if [ $# -eq 0 ]; then
+        # No arguments, so let's have the full menu
+        lunch
+    else
+        echo "z$target" | grep -q "-"
+        if [ $? -eq 0 ]; then
+            # A buildtype was specified, assume a full device name
+            lunch $target
+        else
+            # This is probably just the nexus model name
+            if [ -z "$variant" ]; then
+                variant="userdebug"
+            fi
+            lunch orion_$target-$variant
+        fi
+    fi
+    return $?
+}
+
+alias bib=breakfast
 
 function lunch()
 {

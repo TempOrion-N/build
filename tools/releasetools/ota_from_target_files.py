@@ -645,11 +645,28 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
 """ % bcb_dev)
 
   # Dump fingerprints
-  script.Print("Target: %s" % CalculateFingerprint(
-      oem_props, oem_dict, OPTIONS.info_dict))
+  #script.Print("Target: %s" % CalculateFingerprint(
+  #    oem_props, oem_dict, OPTIONS.info_dict))
+  script.Print("|A|============================================|A|");
+  script.Print("|N|   ____       _               ____  ______  |N|");
+  script.Print("|D|  / __ \     (_)             / __ \|  ____| |D|");
+  script.Print("|R| | |  | |_ __ _  ___  _ __  | |  | | |____  |R|");
+  script.Print("|O| | |  | | '__| |/ _ \| '_ \ | |  | |____  | |O|");
+  script.Print("|M| | |__| | |  | | (_) | | | || |__| |____| | |M|");
+  script.Print("|E|  \____/|_|  |_|\___/|_| |_| \____/|______| |E|");
+  script.Print("|D|                                            |D|");
+  script.Print("|A|============================================|A|");
+  script.Print("");
+  script.Print("");
 
   script.AppendExtra("ifelse(is_mounted(\"/system\"), unmount(\"/system\"));")
   device_specific.FullOTA_InstallBegin()
+
+#  if OPTIONS.backuptool:
+#    script.Mount("/system")
+#    script.Print("Running backup tool...")
+#    script.RunBackup("backup")
+#    script.Unmount("/system")
 
   system_progress = 0.75
 
