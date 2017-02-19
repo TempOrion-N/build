@@ -131,11 +131,11 @@ function check_product()
 
     if (echo -n $1 | grep -q -e "^orion_") ; then
        ORION_BUILD=$(echo -n $1 | sed -e 's/^orion_//g')
-       export BUILD_NUMBER=$((date +%s%N ; echo $ORION_BUILD; hostname) | openssl sha1 | sed -e 's/.*=//g; s/ //g' | cut -c1-10)
     else
        ORION_BUILD=
     fi
     export ORION_BUILD
+    
         TARGET_PRODUCT=$1 \
         TARGET_BUILD_VARIANT= \
         TARGET_BUILD_TYPE= \
